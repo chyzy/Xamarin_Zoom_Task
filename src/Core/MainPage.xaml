@@ -4,55 +4,9 @@
              x:Class="Zoom_Task.MainPage"
              x:DataType="viewmodels:MainPageViewModel"
              Title="Zoom Task">
-
-    <StackLayout VerticalOptions="FillAndExpand">
-        <core:ZoomableScrollView>
-            <StackLayout BindableLayout.ItemsSource="{Binding DocumentPages}"
-                         Margin="25"
-                         Spacing="40">
-                
-                <BindableLayout.ItemTemplate>
-                    <!--You cannot modify the DataTemplate without consult us! You can modify everything above and below the datatempate-->
-                    <DataTemplate x:DataType="viewmodels:DocumentPageViewModel">
-                        <Frame Padding="0" 
-                               CornerRadius="2"
-                               HorizontalOptions="Center">
-                            <AbsoluteLayout BackgroundColor="#f00">
-                                <!--Background Layer-->
-                                <Image Source="{Binding DocumentBackgroundImageSource}"
-                                       Aspect="AspectFit"
-                                       HeightRequest="1000"/>
-                                                              
-                                <!--Text field layer-->
-                                <AbsoluteLayout AbsoluteLayout.LayoutFlags="All"
-                                                AbsoluteLayout.LayoutBounds="0,0,1,1">
-                                    <Entry Text="Sample text entry1"
-                                       AbsoluteLayout.LayoutBounds="0.5,0.1,300,40"
-                                       AbsoluteLayout.LayoutFlags="PositionProportional"
-                                       BackgroundColor="#ddd"/>
-                                    <Entry Text="Sample text entry"
-                                       AbsoluteLayout.LayoutBounds="0.5,0.3,300,40"
-                                       AbsoluteLayout.LayoutFlags="PositionProportional"
-                                       BackgroundColor="#ddd"/>
-                                </AbsoluteLayout>
-
-                                <!--Check box Layer--><!--
-                                <AbsoluteLayout AbsoluteLayout.LayoutFlags="All"
-                                                AbsoluteLayout.LayoutBounds="0,0,1,1">
-                                    <CheckBox
-                                       AbsoluteLayout.LayoutBounds="0.5,0.6,300,40"
-                                       AbsoluteLayout.LayoutFlags="PositionProportional"
-                                       BackgroundColor="#ddd"/>
-                                    <CheckBox
-                                       AbsoluteLayout.LayoutBounds="0.5,0.8,300,40"
-                                       AbsoluteLayout.LayoutFlags="PositionProportional"
-                                       BackgroundColor="#ddd"/>
-                                </AbsoluteLayout>-->
-                            </AbsoluteLayout>
-                        </Frame>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
-            </StackLayout>
-        </core:ZoomableScrollView>
+    <StackLayout>
+        <Button Text="Example Scroll Page" Clicked="ExampleScrollPage"/>
+        <Button Text="Example Scroll Page 2" Clicked="ExampleScrollPage2"/>
+        <Button Text="Example Pan Gesture Page" Clicked="PanGesturePage"/>
     </StackLayout>
 </ContentPage>

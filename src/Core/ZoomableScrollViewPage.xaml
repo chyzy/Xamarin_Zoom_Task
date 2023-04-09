@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Zoom_Task.Core.Controls"
+    xmlns:viewmodels="clr-namespace:Zoom_Task.Core.ViewModels"
+    x:Class="Zoom_Task.Core.ZoomableScrollViewPage">
+    <local:ZoomableScrollView Orientation="Both" MaximumZoom="2.5" MinimumZoom="1">
+        <StackLayout BindableLayout.ItemsSource="{Binding DocumentPages}"
+                         Margin="25"
+                         Spacing="40">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:DocumentPageViewModel">
+                    <Frame Padding="0" 
+                               CornerRadius="2"
+                               HorizontalOptions="Center">
+                        <AbsoluteLayout BackgroundColor="#f00">
+                            <!--Background Layer-->
+                            <Image Source="{Binding DocumentBackgroundImageSource}"
+                                       Aspect="AspectFit"
+                                       HeightRequest="1000"/>
+
+                            <!--Fields Layout-->
+                            <Entry Text="Sample entry"
+                                       AbsoluteLayout.LayoutBounds="0.5,0.3,300,40"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"
+                                       BackgroundColor="#ddd"/>
+                            <Entry Text="Sample entry2"
+                                       AbsoluteLayout.LayoutBounds="0.5,0.6,300,40"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"
+                                       BackgroundColor="#ddd"/>
+                        </AbsoluteLayout>
+                    </Frame>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </StackLayout>
+    </local:ZoomableScrollView>
+</ContentPage>
+
