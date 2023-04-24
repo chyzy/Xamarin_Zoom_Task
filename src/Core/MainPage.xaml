@@ -5,8 +5,8 @@
              x:DataType="viewmodels:MainPageViewModel"
              Title="Zoom Task">
     <StackLayout>
-        <Button Text="Example Scroll Page" Clicked="ExampleScrollPage"/>
-        <Button Text="Example Scroll Page 2" Clicked="ExampleScrollPage2"/>
-        <Button Text="Example Pan Gesture Page" Clicked="PanGesturePage"/>
+        <Button Text="Example Scroll Page" Clicked="ExampleScrollPage" IsVisible="False"/>
+        <Button Text="ZoomScrollView Sample" Clicked="ExampleScrollPage2"/>
+        <Button Text="Example Pan Gesture Page" Clicked="PanGesturePage" IsVisible="False" />
     </StackLayout>
 </ContentPage>

@@ -2,10 +2,12 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:local="clr-namespace:Zoom_Task.Core.Controls"
+    xmlns:zsv="clr-namespace:Zoom_Task.Core.Controls"
     xmlns:viewmodels="clr-namespace:Zoom_Task.Core.ViewModels"
     x:Class="Zoom_Task.Core.ZoomScrollViewPage">
-    <local:ZoomScrollView Orientation="Both" UserInteractionEnabled="True">
+    <zsv:ZoomScrollView Orientation="Both"
+                        MinimumZoomScale="1"
+                        MaximumZoomScale="3">
         <StackLayout BindableLayout.ItemsSource="{Binding DocumentPages}"
                          Margin="25"
                          Spacing="40">
@@ -34,6 +36,6 @@
                 </DataTemplate>
             </BindableLayout.ItemTemplate>
         </StackLayout>
-    </local:ZoomScrollView>
+    </zsv:ZoomScrollView>
 </ContentPage>
 

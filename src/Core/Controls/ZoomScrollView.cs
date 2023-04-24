@@ -4,55 +4,22 @@ using Xamarin.Forms;
 
 namespace Zoom_Task.Core.Controls
 {
-    public class ZoomScrollView : ScrollView, INotifyPropertyChanged
+    public class ZoomScrollView : ScrollView
     {
-        public delegate void ResetZoomScaleDelegate();
-        public ResetZoomScaleDelegate ResetZoomScale;
+        public static readonly BindableProperty MinimumZoomScaleProperty = BindableProperty.Create(nameof(MinimumZoomScale), typeof(float), typeof(ZoomScrollView), 1.0f);
+        public static readonly BindableProperty MaximumZoomScaleProperty = BindableProperty.Create(nameof(MaximumZoomScale), typeof(float), typeof(ZoomScrollView), 1.0f);
 
-        public delegate void SetChildInputTransparentDelegate(bool userInteractionLevel);
-        public SetChildInputTransparentDelegate setChildInputTransparent;
-
-        /// <summary>
-        /// Overridden version, to reset zoom scale so errors dont arise
-        /// </summary>
-        public new bool InputTransparent
+        public float MinimumZoomScale
         {
-            get => (bool)GetValue(InputTransparentProperty);
-            set
-            {
-                ResetZoomScale();
-                SetValue(InputTransparentProperty, value);
-            }
+            get => (float)GetValue(MinimumZoomScaleProperty);
+            set => SetValue(MinimumZoomScaleProperty, value);
         }
 
-
-        public bool UserInteractionEnabled
+        public float MaximumZoomScale
         {
-            get => (bool)GetValue(UserInteractionEnabledProperty);
-            set
-            {
-                SetValue(UserInteractionEnabledProperty, value);
-                setChildInputTransparent(value);
-            }
+            get => (float)GetValue(MaximumZoomScaleProperty);
+            set => SetValue(MaximumZoomScaleProperty, value);
         }
-
-        private static void OnUserInteractionPropertyChanged(BindableObject bindable, object oldVal, object newVal)
-        {
-            var zoomview = bindable as ZoomScrollView;
-            bool newValResult;
-            if (bool.TryParse(newVal.ToString(), out newValResult))
-            {
-                zoomview.Content.InputTransparent = newValResult;
-            }
-        }
-
-        public static readonly BindableProperty UserInteractionEnabledProperty =
-        BindableProperty.Create(propertyName: nameof(UserInteractionEnabled),
-          returnType: typeof(bool),
-          declaringType: typeof(ZoomScrollView),
-          defaultValue: true,
-          propertyChanged: OnUserInteractionPropertyChanged
-          );
 
         public ZoomScrollView()
         {
