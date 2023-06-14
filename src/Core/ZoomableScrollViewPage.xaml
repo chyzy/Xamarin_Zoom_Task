@@ -24,11 +24,15 @@
                             <Entry Text="Sample entry"
                                        AbsoluteLayout.LayoutBounds="0.5,0.3,300,40"
                                        AbsoluteLayout.LayoutFlags="PositionProportional"
-                                       BackgroundColor="#ddd"/>
+                                       BackgroundColor="#ddd"
+                                       Focused="Entry_Focused"
+                                       Unfocused="Entry_Unfocused"/>
                             <Entry Text="Sample entry2"
                                        AbsoluteLayout.LayoutBounds="0.5,0.6,300,40"
                                        AbsoluteLayout.LayoutFlags="PositionProportional"
-                                       BackgroundColor="#ddd"/>
+                                       BackgroundColor="#ddd"
+                                       Focused="Entry_Focused"
+                                       Unfocused="Entry_Unfocused"/>
                         </AbsoluteLayout>
                     </Frame>
                 </DataTemplate>

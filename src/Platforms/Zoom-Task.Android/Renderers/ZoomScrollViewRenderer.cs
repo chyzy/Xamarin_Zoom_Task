@@ -20,6 +20,9 @@ namespace Zoom_Task.Droid.Renderers
         private AndroidView _content;
         private VisualElementTracker _contentTracker;
 
+        private double ScrolledXPosition = 0.0;
+        private double ScrolledYPosition = 0.0;
+
         private ZoomScrollView _ZoomScrollView => Element as ZoomScrollView;
 
         public ZoomScrollViewRenderer(Context context) : base(context)
@@ -66,12 +69,19 @@ namespace Zoom_Task.Droid.Renderers
             double panX = Context.FromPixels(engine.PanX);
             double panY = Context.FromPixels(engine.PanY);
 
-            Element.SetScrolledPosition(panX, panY);
+            System.Diagnostics.Debug.WriteLine($"ZoomScrollView OnUpdate : {panX}, {panY}");
+
+            ScrolledXPosition = panX;
+            ScrolledYPosition = panY;
+
+            Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args)
         {
             base.OnElementPropertyChanged(sender, args);
+
+            System.Diagnostics.Debug.WriteLine($"ZoomScrollView : OnElementPropertyChanged : {args.PropertyName}");
 
             if (args.PropertyName == nameof(ZoomScrollView.MinimumZoomScale) ||
                 args.PropertyName == nameof(ZoomScrollView.MaximumZoomScale))
@@ -84,7 +94,8 @@ namespace Zoom_Task.Droid.Renderers
         {
             float toX = Context.ToPixels(args.ScrollX);
             float toY = Context.ToPixels(args.ScrollY);
-
+            System.Diagnostics.Debug.WriteLine($"ZoomScrollView : ScrollRequested : X : {toX}, Y : {toY}, ShouldAnimate : {args.ShouldAnimate}");
+            
             if (args.Mode == ScrollToMode.Element)
             {
                 Xamarin.Forms.Point itemPosition = Element.GetScrollPositionForElement(args.Element as VisualElement, args.Position);
@@ -163,12 +174,14 @@ namespace Zoom_Task.Droid.Renderers
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             base.OnLayout(changed, l, t, r, b);
-
+            System.Diagnostics.Debug.WriteLine($"OnLayout : {changed}, {l}, {t}, {r}, {b}, ScrolledXPosition : {ScrolledXPosition}, ScrolledYPosition : {ScrolledYPosition}, IsEntryFocused : {App.IsEntryFocused}");
             _contentTracker?.UpdateLayout();
+            Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
         }
 
         private void UpdateMinMaxScale()
         {
+            System.Diagnostics.Debug.WriteLine("Update MinMax Scale");
             if (_zoomLayout != null && _ZoomScrollView != null)
             {
                 _zoomLayout.SetMinZoom(_ZoomScrollView.MinimumZoomScale, ZoomLayout.InterfaceConsts.TypeZoom);
@@ -178,6 +191,7 @@ namespace Zoom_Task.Droid.Renderers
 
         private void UpdateScrollbars()
         {
+            System.Diagnostics.Debug.WriteLine("Update Scrollbars");
             if (_zoomLayout != null && _ZoomScrollView != null)
             {
                 _zoomLayout.SetHorizontalPanEnabled(_ZoomScrollView.Orientation == ScrollOrientation.Horizontal ||
