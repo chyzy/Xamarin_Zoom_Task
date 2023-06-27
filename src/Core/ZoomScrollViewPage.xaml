@@ -16,23 +16,39 @@
                     <Frame Padding="0" 
                                CornerRadius="2"
                                HorizontalOptions="Center">
-                        <AbsoluteLayout BackgroundColor="#f00">
-                            <!--Background Layer-->
-                            <Image Source="{Binding DocumentBackgroundImageSource}"
+                            <AbsoluteLayout BackgroundColor="#f00">
+                                <!--Background Layer-->
+                                <Image Source="{Binding DocumentBackgroundImageSource}"
                                        Aspect="AspectFit"
                                        HeightRequest="1000"/>
-
-                            <!--Fields Layout-->
-                            <Entry Text="Sample entry"
+                                                              
+                                <!--Text field layer-->
+                                <AbsoluteLayout AbsoluteLayout.LayoutFlags="All"
+                                                AbsoluteLayout.LayoutBounds="0,0,1,1">
+                                    <Entry Text="Sample text entry1"
+                                       AbsoluteLayout.LayoutBounds="0.5,0.1,300,40"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"
+                                       BackgroundColor="#ddd"/>
+                                    <Entry Text="Sample text entry"
                                        AbsoluteLayout.LayoutBounds="0.5,0.3,300,40"
                                        AbsoluteLayout.LayoutFlags="PositionProportional"
                                        BackgroundColor="#ddd"/>
-                            <Entry Text="Sample entry2"
+                                </AbsoluteLayout>
+
+                                <!--Check box Layer--><!--
+                                <AbsoluteLayout AbsoluteLayout.LayoutFlags="All"
+                                                AbsoluteLayout.LayoutBounds="0,0,1,1">
+                                    <CheckBox
                                        AbsoluteLayout.LayoutBounds="0.5,0.6,300,40"
                                        AbsoluteLayout.LayoutFlags="PositionProportional"
                                        BackgroundColor="#ddd"/>
-                        </AbsoluteLayout>
-                    </Frame>
+                                    <CheckBox
+                                       AbsoluteLayout.LayoutBounds="0.5,0.8,300,40"
+                                       AbsoluteLayout.LayoutFlags="PositionProportional"
+                                       BackgroundColor="#ddd"/>
+                                </AbsoluteLayout>-->
+                            </AbsoluteLayout>
+                        </Frame>
                 </DataTemplate>
             </BindableLayout.ItemTemplate>
         </StackLayout>

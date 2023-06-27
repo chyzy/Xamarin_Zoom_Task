@@ -31,8 +31,8 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidLinkMode>None</AndroidLinkMode>
     <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Zoom_Task.Core.csproj">
-      <Project>{f73b0ba0-116c-40a7-aaaa-04e47cab8c5c}</Project>
+      <Project>{F73B0BA0-116C-40A7-AAAA-04E47CAB8C5C}</Project>
       <Name>Zoom_Task.Core</Name>
     </ProjectReference>
   </ItemGroup>
