@@ -13,6 +13,6 @@ namespace Zoom_Task.Core
 			InitializeComponent ();
             BindingContext = new MainPageViewModel();
         }
-	}
+    }
 }
 

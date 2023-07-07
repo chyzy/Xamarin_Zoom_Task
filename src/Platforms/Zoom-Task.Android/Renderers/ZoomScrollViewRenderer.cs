@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Android.Content;
 using Android.Graphics;
 using Android.Views;
+using Android.Views.InputMethods;
 using Com.Otaliastudios.Zoom;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -19,6 +20,7 @@ namespace Zoom_Task.Droid.Renderers
         private ZoomLayout _zoomLayout;
         private AndroidView _content;
         private VisualElementTracker _contentTracker;
+        private InputMethodManager _inputMethodManager;
 
         private double ScrolledXPosition = 0.0;
         private double ScrolledYPosition = 0.0;
@@ -28,6 +30,7 @@ namespace Zoom_Task.Droid.Renderers
         public ZoomScrollViewRenderer(Context context) : base(context)
         {
             AutoPackage = false;
+            _inputMethodManager = (InputMethodManager)context.GetSystemService(Context.InputMethodService);
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<ZoomScrollView> args)
@@ -173,10 +176,23 @@ namespace Zoom_Task.Droid.Renderers
 
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
-            base.OnLayout(changed, l, t, r, b);
-            System.Diagnostics.Debug.WriteLine($"OnLayout : {changed}, {l}, {t}, {r}, {b}, ScrolledXPosition : {ScrolledXPosition}, ScrolledYPosition : {ScrolledYPosition}, IsEntryFocused : {App.IsEntryFocused}");
-            _contentTracker?.UpdateLayout();
+            bool isKeyboardFocused = false;
+
+            try
+            {
+                isKeyboardFocused = _inputMethodManager.IsAcceptingText;
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception while checking for input : {ex.Message}");
+            }
+
+            if(!isKeyboardFocused)
+                base.OnLayout(changed, l, t, r, b);
+
+            System.Diagnostics.Debug.WriteLine($"OnLayout : {changed}, {l}, {t}, {r}, {b}, ScrolledXPosition : {ScrolledXPosition}, ScrolledYPosition : {ScrolledYPosition}, KeyboardIsOpen : {isKeyboardFocused}, Zoom Factor : {_zoomLayout.Zoom}");
             Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
+            _contentTracker?.UpdateLayout();
         }
 
         private void UpdateMinMaxScale()

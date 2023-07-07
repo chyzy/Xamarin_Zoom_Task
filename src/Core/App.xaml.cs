@@ -6,8 +6,6 @@ namespace Zoom_Task
 {
     public partial class App : Application
     {
-        public static bool IsEntryFocused { get; set; }
-
         public App()
         {
             InitializeComponent();

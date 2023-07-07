@@ -13,18 +13,6 @@ namespace Zoom_Task.Core
 			InitializeComponent ();
             BindingContext = new MainPageViewModel();
         }
-
-        void Entry_Focused(System.Object sender, Xamarin.Forms.FocusEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Entry Focused");
-            App.IsEntryFocused = true;
-        }
-
-        void Entry_Unfocused(System.Object sender, Xamarin.Forms.FocusEventArgs e)
-        {
-            System.Diagnostics.Debug.WriteLine("Entry Unfocused");
-            App.IsEntryFocused = false;
-        }
     }
 }
 
