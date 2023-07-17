@@ -35,6 +35,7 @@ namespace Zoom_Task.Droid.Renderers
 
         protected override void OnElementChanged(ElementChangedEventArgs<ZoomScrollView> args)
         {
+            System.Diagnostics.Debug.WriteLine($"OnElementChanged : {args.NewElement}");
             if (args.OldElement != null)
             {
                 UnhookScrollToRequestListener(args.OldElement);
@@ -84,21 +85,22 @@ namespace Zoom_Task.Droid.Renderers
         {
             base.OnElementPropertyChanged(sender, args);
 
-            System.Diagnostics.Debug.WriteLine($"ZoomScrollView : OnElementPropertyChanged : {args.PropertyName}");
+            System.Diagnostics.Debug.WriteLine($"ZoomScrollView : OnElementPropertyChanged : {args.PropertyName}, Zoom : {_zoomLayout.Zoom}, Zoom Condition : {_zoomLayout.Zoom > Element.MinimumZoomScale}");
 
             if (args.PropertyName == nameof(ZoomScrollView.MinimumZoomScale) ||
                 args.PropertyName == nameof(ZoomScrollView.MaximumZoomScale))
             {
                 UpdateMinMaxScale();
             }
+
+            _zoomLayout.SetOverScrollHorizontal(_zoomLayout.Zoom > Element.MinimumZoomScale);
         }
 
         private void OnScrollRequested(object sender, ScrollToRequestedEventArgs args)
         {
             float toX = Context.ToPixels(args.ScrollX);
             float toY = Context.ToPixels(args.ScrollY);
-            System.Diagnostics.Debug.WriteLine($"ZoomScrollView : ScrollRequested : X : {toX}, Y : {toY}, ShouldAnimate : {args.ShouldAnimate}");
-            
+           
             if (args.Mode == ScrollToMode.Element)
             {
                 Xamarin.Forms.Point itemPosition = Element.GetScrollPositionForElement(args.Element as VisualElement, args.Position);
@@ -115,7 +117,9 @@ namespace Zoom_Task.Droid.Renderers
             ZoomLayout result = GetChildOfType<ZoomLayout>() ?? new ZoomLayout(Context);
 
             result.RemoveAllViews();
-
+            result.OverScrollMode = OverScrollMode.IfContentScrolls;
+            result.SetOverScrollHorizontal(false);
+            result.SetOverPinchable(false);
             return result;
         }
 
@@ -190,7 +194,6 @@ namespace Zoom_Task.Droid.Renderers
             if(!isKeyboardFocused)
                 base.OnLayout(changed, l, t, r, b);
 
-            System.Diagnostics.Debug.WriteLine($"OnLayout : {changed}, {l}, {t}, {r}, {b}, ScrolledXPosition : {ScrolledXPosition}, ScrolledYPosition : {ScrolledYPosition}, KeyboardIsOpen : {isKeyboardFocused}, Zoom Factor : {_zoomLayout.Zoom}");
             Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
             _contentTracker?.UpdateLayout();
         }
