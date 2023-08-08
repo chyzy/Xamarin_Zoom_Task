@@ -30,7 +30,7 @@ namespace Zoom_Task.Droid.Renderers
         public ZoomScrollViewRenderer(Context context) : base(context)
         {
             AutoPackage = false;
-            _inputMethodManager = (InputMethodManager)context.GetSystemService(Context.InputMethodService);
+            _inputMethodManager = (InputMethodManager)context.GetSystemService(Context.InputMethodService);            
         }
 
         protected override void OnElementChanged(ElementChangedEventArgs<ZoomScrollView> args)
@@ -181,10 +181,10 @@ namespace Zoom_Task.Droid.Renderers
         protected override void OnLayout(bool changed, int l, int t, int r, int b)
         {
             bool isKeyboardFocused = false;
-
             try
             {
                 isKeyboardFocused = _inputMethodManager.IsAcceptingText;
+                System.Diagnostics.Debug.WriteLine($"OnLayout : isKeyboardFocused : {isKeyboardFocused}");
             }
             catch(Exception ex)
             {
@@ -192,10 +192,12 @@ namespace Zoom_Task.Droid.Renderers
             }
 
             if(!isKeyboardFocused)
+            {
                 base.OnLayout(changed, l, t, r, b);
+                _contentTracker?.UpdateLayout();
+            }
 
             Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
-            _contentTracker?.UpdateLayout();
         }
 
         private void UpdateMinMaxScale()

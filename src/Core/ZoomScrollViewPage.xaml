@@ -42,7 +42,7 @@
                             <!--Check box Layer-->
                             
                             <AbsoluteLayout AbsoluteLayout.LayoutFlags="All"
-                                            AbsoluteLayout.LayoutBounds="0,0,1,1">
+                                            AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="false">
                                 <CheckBox
                                     AbsoluteLayout.LayoutBounds="0.5,0.6,300,40"
                                     AbsoluteLayout.LayoutFlags="PositionProportional"
