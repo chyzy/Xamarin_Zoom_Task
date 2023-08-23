@@ -64,7 +64,6 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderers\ZoomableScrollViewRenderer.cs" />
     <Compile Include="Renderers\ZoomScrollViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -90,7 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
-    <Folder Include="Renderers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Zoom_Task.Core.csproj">

@@ -27,7 +27,8 @@
     <MtouchArch>x86_64</MtouchArch>
     <MtouchLink>SdkOnly</MtouchLink>
     <MtouchDebug>true</MtouchDebug>
-    <CodesignProvision></CodesignProvision>
+    <CodesignProvision>
+    </CodesignProvision>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchSdkVersion>16.2</MtouchSdkVersion>
   </PropertyGroup>
@@ -71,7 +72,6 @@
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderers\ZoomableScrollViewRenderer.cs" />
     <Compile Include="Renderers\ZoomScrollViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,8 +137,6 @@
       <Name>Zoom_Task.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Renderers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
 </Project>
