@@ -1,62 +1,171 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodels="clr-namespace:Zoom_Task.Core.ViewModels"
-             xmlns:zsv="clr-namespace:Zoom_Task.Core.Controls"
-             x:Class="Zoom_Task.Core.DocumentViewPage">
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:Zoom_Task.Core.ViewModels"
+    xmlns:controls="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+    xmlns:zsv="clr-namespace:Zoom_Task.Core.Controls"
+    x:Class="Zoom_Task.Core.DocumentViewPage">
     <ContentPage.Content>
-        <zsv:ZoomScrollView Orientation="Both"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="FillAndExpand"
-                     MinimumZoomScale="1"
-                     MaximumZoomScale="3">
-            <StackLayout BindableLayout.ItemsSource="{Binding DocumentPages}"
-                  HorizontalOptions="FillAndExpand"
-                  VerticalOptions="FillAndExpand"
-                  Padding="25"
-                  Spacing="40">
-                <BindableLayout.ItemTemplate>
-                    <DataTemplate x:DataType="viewmodels:DocumentPageViewModel">
-                        <Frame Padding="0"
-                        CornerRadius="2"
-                        HorizontalOptions="Center">
-                            <AbsoluteLayout BackgroundColor="#f00">
-                                <!--Background Layer-->
-                                <Image Source="{Binding DocumentBackgroundImageSource}"
-                                Aspect="AspectFit"
-                                HeightRequest="1000"/>
+        <Grid
+            HorizontalOptions="FillAndExpand"
+            VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="*" />
+            </Grid.RowDefinitions>
+            <zsv:ZoomScrollView
+                Grid.Row="0"
+                x:Name="MainScrollView"
+                Orientation="Both"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                MinimumZoomScale="1"
+                MaximumZoomScale="3">
+                <StackLayout
+                    BindableLayout.ItemsSource="{Binding DocumentPages}"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand"
+                    Padding="25"
+                    Spacing="40">
+                    <BindableLayout.ItemTemplate>
+                        <DataTemplate
+                            x:DataType="viewmodels:DocumentPageViewModel">
+                            <Frame
+                                Padding="0"
+                                CornerRadius="2"
+                                HorizontalOptions="Center">
+                                <AbsoluteLayout>
+                                    <!--Background Layer-->
+                                    <Image
+                                        Source="{Binding DocumentBackgroundImageSource}"
+                                        Aspect="AspectFit"
+                                        HeightRequest="1000" />
 
-                                <!--Text field layer-->
-                                <AbsoluteLayout AbsoluteLayout.LayoutFlags="All"
-                                         AbsoluteLayout.LayoutBounds="0,0,1,1">
-                                    <Entry Text="Sample text entry1"
-                                    AbsoluteLayout.LayoutBounds="0.5,0.1,300,40"
-                                    AbsoluteLayout.LayoutFlags="PositionProportional"
-                                    BackgroundColor="#ddd"/>
-                                    <Entry Text="Sample text entry"
-                                    AbsoluteLayout.LayoutBounds="0.5,0.3,300,40"
-                                    AbsoluteLayout.LayoutFlags="PositionProportional"
-                                    BackgroundColor="#ddd"/>
+                                    <!--Text field layer-->
+                                    <AbsoluteLayout
+                                        AbsoluteLayout.LayoutFlags="All"
+                                        AbsoluteLayout.LayoutBounds="0,0,1,1">
+                                        <Entry
+                                            Text="Sample text entry1"
+                                            AbsoluteLayout.LayoutBounds="0.5,0.1,300,40"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            BackgroundColor="#ddd" />
+                                        <Entry
+                                            Text="Sample text entry"
+                                            AbsoluteLayout.LayoutBounds="0.5,0.3,300,40"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            BackgroundColor="#ddd" />
+                                    </AbsoluteLayout>
+
+                                    <!--Check box Layer-->
+
+                                    <AbsoluteLayout
+                                        AbsoluteLayout.LayoutFlags="All"
+                                        AbsoluteLayout.LayoutBounds="0,0,1,1"
+                                        IsVisible="false">
+                                        <CheckBox
+                                            AbsoluteLayout.LayoutBounds="0.5,0.6,300,40"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            BackgroundColor="#ddd" />
+                                        <CheckBox
+                                            AbsoluteLayout.LayoutBounds="0.5,0.8,300,40"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            BackgroundColor="#ddd" />
+                                    </AbsoluteLayout>
+                                    <!-- Add code here to Zoom-In and Zoom-Out related stuff -->
+                                    <StackLayout
+                                        AbsoluteLayout.LayoutBounds="0.96,0.95,250,120"
+                                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="End"
+                                        Spacing="8">
+                                        <Image
+                                            x:Name="ImgSignature"
+                                            WidthRequest="250"
+                                            HeightRequest="50"
+                                            Source="{Binding Signature, Mode=TwoWay}"
+                                            BackgroundColor="White" />
+                                        <Label
+                                            WidthRequest="250"
+                                            HeightRequest="30"
+                                            HorizontalOptions="FillAndExpand"
+                                            HorizontalTextAlignment="End"
+                                            Text="Signature"
+                                            FontSize="Medium" />
+                                        <Button
+                                            BackgroundColor="Green"
+                                            WidthRequest="250"
+                                            HeightRequest="40"
+                                            HorizontalOptions="FillAndExpand"
+                                            TextColor="White"
+                                            Text="Signature"
+                                            CommandParameter="{Binding Source={x:Reference ImgSignature}}"
+                                            Clicked="Button_Clicked" />
+                                    </StackLayout>
                                 </AbsoluteLayout>
-
-                                <!--Check box Layer-->
-
-                                <AbsoluteLayout AbsoluteLayout.LayoutFlags="All"
-                                         AbsoluteLayout.LayoutBounds="0,0,1,1" IsVisible="false">
-                                    <CheckBox
-                                 AbsoluteLayout.LayoutBounds="0.5,0.6,300,40"
-                                 AbsoluteLayout.LayoutFlags="PositionProportional"
-                                 BackgroundColor="#ddd"/>
-                                    <CheckBox
-                                 AbsoluteLayout.LayoutBounds="0.5,0.8,300,40"
-                                 AbsoluteLayout.LayoutFlags="PositionProportional"
-                                 BackgroundColor="#ddd"/>
-                                </AbsoluteLayout>
-                            </AbsoluteLayout>
-                        </Frame>
-                    </DataTemplate>
-                </BindableLayout.ItemTemplate>
+                            </Frame>
+                        </DataTemplate>
+                    </BindableLayout.ItemTemplate>
+                </StackLayout>
+            </zsv:ZoomScrollView>
+            <StackLayout
+                x:Name="SLSingatureView"
+                IsVisible="False"
+                Grid.Row="0"
+                Grid.Column="0"
+                Scale="0"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand"
+                BackgroundColor="#88000000"
+                Padding="20">
+                <Grid
+                    BackgroundColor="White"
+                    Padding="10"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition
+                            Height="*" />
+                        <RowDefinition
+                            Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition
+                            Width="*" />
+                        <ColumnDefinition
+                            Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <controls:SignaturePadView
+                        x:Name="signatureView"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        StrokeWidth="3"
+                        StrokeColor="Black"
+                        BackgroundColor="White" />
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="Center"
+                        BackgroundColor="Green"
+                        TextColor="White"
+                        Text="Accept"
+                        FontSize="Large"
+                        Clicked="BtnAcceptSignature_Clicked" />
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        HorizontalOptions="FillAndExpand"
+                        Text="Cancel"
+                        FontSize="Large"
+                        VerticalOptions="Center"
+                        Clicked="BtnCancelSignature_Clicked" />
+                </Grid>
             </StackLayout>
-        </zsv:ZoomScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

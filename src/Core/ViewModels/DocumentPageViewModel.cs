@@ -19,5 +19,11 @@ namespace Zoom_Task.Core.ViewModels
             set { _documentBackgroundImageSource = value; }
         }
 
+        public ImageSource _signature;
+        public ImageSource Signature
+        {
+            get => _signature;
+            set { _signature = value; }
+        }
     }
 }
