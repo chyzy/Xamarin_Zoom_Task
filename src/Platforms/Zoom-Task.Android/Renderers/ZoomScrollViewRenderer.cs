@@ -24,6 +24,7 @@ namespace Zoom_Task.Droid.Renderers
 
         private double ScrolledXPosition = 0.0;
         private double ScrolledYPosition = 0.0;
+        private double LastZoomedScale = 0.0;
 
         private ZoomScrollView _ZoomScrollView => Element as ZoomScrollView;
 
@@ -65,7 +66,7 @@ namespace Zoom_Task.Droid.Renderers
 
         public void OnIdle(ZoomEngine engine)
         {
-            Element.SendScrollFinished();
+            Element.SendScrollFinished();  
         }
 
         public void OnUpdate(ZoomEngine engine, Matrix transform)
@@ -73,10 +74,14 @@ namespace Zoom_Task.Droid.Renderers
             double panX = Context.FromPixels(engine.PanX);
             double panY = Context.FromPixels(engine.PanY);
 
-            System.Diagnostics.Debug.WriteLine($"ZoomScrollView OnUpdate : {panX}, {panY}");
+            System.Diagnostics.Debug.WriteLine($"ZoomScrollView OnUpdate : {panX}, {panY}, ZoomLayout.Zoom =  {_zoomLayout.Zoom}, LastZoomedScale : {LastZoomedScale}");
+            if (_ZoomScrollView.ScrollX == panX && _ZoomScrollView.ScrollY == panY)
+                return;
 
             ScrolledXPosition = panX;
             ScrolledYPosition = panY;
+            LastZoomedScale = _zoomLayout.Zoom;
+            _ZoomScrollView.CurrentZoomScale = _zoomLayout.Zoom;
 
             Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
         }
@@ -91,6 +96,10 @@ namespace Zoom_Task.Droid.Renderers
                 args.PropertyName == nameof(ZoomScrollView.MaximumZoomScale))
             {
                 UpdateMinMaxScale();
+            }
+            else if (args.PropertyName == nameof(ZoomScrollView.CurrentZoomScale))
+            {
+                UpdateCurrentZoomScale();
             }
 
             _zoomLayout.SetOverScrollHorizontal(_zoomLayout.Zoom > Element.MinimumZoomScale);
@@ -169,7 +178,7 @@ namespace Zoom_Task.Droid.Renderers
         private void HookScrollToRequestListener(ZoomScrollView view)
         {
             _zoomLayout.Engine.AddListener(this);
-            view.ScrollToRequested += OnScrollRequested;
+            view.ScrollToRequested += OnScrollRequested;            
         }
 
         private void UnhookScrollToRequestListener(ZoomScrollView view)
@@ -197,6 +206,7 @@ namespace Zoom_Task.Droid.Renderers
                 _contentTracker?.UpdateLayout();
             }
 
+            System.Diagnostics.Debug.WriteLine($"OnLayout : Setting ScrolledPosition : {ScrolledXPosition}, {ScrolledYPosition}");
             Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
         }
 
@@ -207,6 +217,15 @@ namespace Zoom_Task.Droid.Renderers
             {
                 _zoomLayout.SetMinZoom(_ZoomScrollView.MinimumZoomScale, ZoomLayout.InterfaceConsts.TypeZoom);
                 _zoomLayout.SetMaxZoom(_ZoomScrollView.MaximumZoomScale, ZoomLayout.InterfaceConsts.TypeZoom);
+            }
+        }
+
+        private void UpdateCurrentZoomScale()
+        {
+            if (_zoomLayout != null && _ZoomScrollView != null && _ZoomScrollView.CurrentZoomScale != _zoomLayout.Zoom)
+            {
+                System.Diagnostics.Debug.WriteLine($"Set Zoom to : {_ZoomScrollView.CurrentZoomScale}, From : {_zoomLayout.Zoom}");
+                _zoomLayout.ZoomTo(_ZoomScrollView.CurrentZoomScale, false);
             }
         }
 

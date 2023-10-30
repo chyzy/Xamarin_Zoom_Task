@@ -8,6 +8,7 @@ namespace Zoom_Task.Core.Controls
     {
         public static readonly BindableProperty MinimumZoomScaleProperty = BindableProperty.Create(nameof(MinimumZoomScale), typeof(float), typeof(ZoomScrollView), 1.0f);
         public static readonly BindableProperty MaximumZoomScaleProperty = BindableProperty.Create(nameof(MaximumZoomScale), typeof(float), typeof(ZoomScrollView), 1.0f);
+        public static readonly BindableProperty CurrentZoomScaleProperty = BindableProperty.Create(nameof(CurrentZoomScale), typeof(float), typeof(ZoomScrollView), 1.0f);
 
         public float MinimumZoomScale
         {
@@ -19,6 +20,12 @@ namespace Zoom_Task.Core.Controls
         {
             get => (float)GetValue(MaximumZoomScaleProperty);
             set => SetValue(MaximumZoomScaleProperty, value);
+        }
+
+        public float CurrentZoomScale
+        {  
+            get => (float)GetValue(CurrentZoomScaleProperty);
+            set => SetValue(CurrentZoomScaleProperty, value);
         }
 
         public ZoomScrollView()

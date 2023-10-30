@@ -17,6 +17,7 @@
             <zsv:ZoomScrollView
                 Grid.Row="0"
                 x:Name="MainScrollView"
+                Scrolled="MainScrollView_Scrolled"
                 Orientation="Both"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
@@ -74,7 +75,7 @@
                                             BackgroundColor="#ddd" />
                                     </AbsoluteLayout>
                                     <!-- Add code here to Zoom-In and Zoom-Out related stuff -->
-                                    <StackLayout
+                                    <!--<StackLayout
                                         AbsoluteLayout.LayoutBounds="0.96,0.95,250,120"
                                         AbsoluteLayout.LayoutFlags="PositionProportional"
                                         HorizontalOptions="End"
@@ -102,7 +103,13 @@
                                             Text="Signature"
                                             CommandParameter="{Binding Source={x:Reference ImgSignature}}"
                                             Clicked="Button_Clicked" />
-                                    </StackLayout>
+                                    </StackLayout>-->
+                                    <zsv:ScaleView AbsoluteLayout.LayoutBounds="0.96,0.95,250,120"
+                                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="End"
+                                                   ZoomedIn="ScaleView_ZoomedIn"
+                                                   ZoomedOut="ScaleView_ZoomedOut"/>
                                 </AbsoluteLayout>
                             </Frame>
                         </DataTemplate>
