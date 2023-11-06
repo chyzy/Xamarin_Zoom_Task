@@ -14,6 +14,7 @@
   <ItemGroup>
     <None Remove="Images\Document_A4.jpg" />
     <None Remove="Controls\" />
+    <None Remove="Converters\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
+    <Folder Include="Converters\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="DocumentViewPage.xaml">

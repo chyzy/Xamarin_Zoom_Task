@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:Zoom_Task.Core.Converters"
              x:Class="Zoom_Task.App">
     <Application.Resources>
-
+        <ResourceDictionary>
+            <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

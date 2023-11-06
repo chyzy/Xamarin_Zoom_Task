@@ -2,55 +2,67 @@
 <ContentView
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Zoom_Task.Core.Controls.ScaleView"
-    BackgroundColor="Red">
+    x:Class="Zoom_Task.Core.Controls.ScaleView">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <Style
+                TargetType="Label">
+                <Setter
+                    Property="HorizontalOptions"
+                    Value="FillAndExpand" />
+                <Setter
+                    Property="VerticalOptions"
+                    Value="Center" />
+                <Setter
+                    Property="HorizontalTextAlignment"
+                    Value="Center" />
+                <Setter
+                    Property="TextTransform"
+                    Value="Uppercase" />
+                <Setter
+                    Property="LineBreakMode"
+                    Value="NoWrap" />
+                <Setter
+                    Property="Margin"
+                    Value="10,2" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
     <StackLayout
+        x:Name="MainContainer"
+        Padding="8,4"
+        Spacing="4"
         HorizontalOptions="FillAndExpand"
-        VerticalOptions="Center">
-        <Button
-            x:Name="BtnScaleView"
-            Margin="10"
+        VerticalOptions="FillAndExpand">
+        <Label
+            x:Name="LblScaleView"
+            IsVisible="{Binding IsZoomedIn, Converter={StaticResource BoolInvertConverter}}"
+            Text="Scale In">
+            <Label.GestureRecognizers>
+                <TapGestureRecognizer
+                    Tapped="BtnScaleView_Clicked" />
+            </Label.GestureRecognizers>
+        </Label>
+        <StackLayout
+            x:Name="ButtonContainer"
             HorizontalOptions="FillAndExpand"
-            Text="Scale In"
-            FontSize="Large"
             VerticalOptions="Center"
-            Clicked="BtnScaleView_Clicked" />
-        <Grid
-            x:Name="MainGrid"
-            HorizontalOptions="FillAndExpand"
-            VerticalOptions="FillAndExpand">
-            <Grid.RowDefinitions>
-                <RowDefinition
-                    Height="Auto" />
-                <RowDefinition
-                    Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    Width="*" />
-                <ColumnDefinition
-                    Width="*" />
-            </Grid.ColumnDefinitions>
-            <Button
-                x:Name="BtnAccept"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="Center"
-                BackgroundColor="Green"
-                Margin="10"
-                Text="{Binding }"
-                FontSize="Large"
-                Clicked="BtnAccept_Clicked" />
-            <Button
-                x:Name="BtnScaleOut"
-                Grid.Row="0"
-                Grid.Column="1"
-                BackgroundColor="Red"
-                Margin="10"
-                HorizontalOptions="FillAndExpand"
-                Text="{Binding }"
-                FontSize="Large"
-                VerticalOptions="Center"
-                Clicked="BtnScaleOut_Clicked" />
-        </Grid>
+            Orientation="Horizontal"
+            IsVisible="{Binding IsZoomedIn}">
+            <Label
+                x:Name="LblAccept">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Tapped="Accept_Clicked" />
+                </Label.GestureRecognizers>
+            </Label>
+            <Label
+                x:Name="LblCancel">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer
+                        Tapped="Cancel_Clicked" />
+                </Label.GestureRecognizers>
+            </Label>
+        </StackLayout>
     </StackLayout>
 </ContentView>

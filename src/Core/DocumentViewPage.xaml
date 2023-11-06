@@ -75,41 +75,38 @@
                                             BackgroundColor="#ddd" />
                                     </AbsoluteLayout>
                                     <!-- Add code here to Zoom-In and Zoom-Out related stuff -->
-                                    <!--<StackLayout
-                                        AbsoluteLayout.LayoutBounds="0.96,0.95,250,120"
+                                    <zsv:ScaleView
+                                        AbsoluteLayout.LayoutBounds="0.96,0.96,250,120"
                                         AbsoluteLayout.LayoutFlags="PositionProportional"
+                                        HeightRequest="100"
+                                        BackgroundColor="Yellow"
                                         HorizontalOptions="End"
                                         VerticalOptions="End"
-                                        Spacing="8">
-                                        <Image
-                                            x:Name="ImgSignature"
-                                            WidthRequest="250"
-                                            HeightRequest="50"
-                                            Source="{Binding Signature, Mode=TwoWay}"
-                                            BackgroundColor="White" />
-                                        <Label
-                                            WidthRequest="250"
-                                            HeightRequest="30"
-                                            HorizontalOptions="FillAndExpand"
-                                            HorizontalTextAlignment="End"
-                                            Text="Signature"
-                                            FontSize="Medium" />
-                                        <Button
-                                            BackgroundColor="Green"
-                                            WidthRequest="250"
-                                            HeightRequest="40"
-                                            HorizontalOptions="FillAndExpand"
-                                            TextColor="White"
-                                            Text="Signature"
-                                            CommandParameter="{Binding Source={x:Reference ImgSignature}}"
-                                            Clicked="Button_Clicked" />
-                                    </StackLayout>-->
-                                    <zsv:ScaleView AbsoluteLayout.LayoutBounds="0.96,0.95,250,120"
-                                        AbsoluteLayout.LayoutFlags="PositionProportional"
-                                        HorizontalOptions="End"
-                                        VerticalOptions="End"
-                                                   ZoomedIn="ScaleView_ZoomedIn"
-                                                   ZoomedOut="ScaleView_ZoomedOut"/>
+                                        ZoomInTitle="Sign Below"
+                                        ZoomInTitleFontSize="14"
+                                        ZoomInTitleTextColor="Black"
+                                        AcceptTitle="Accept"
+                                        AcceptTitleFontSize="12"
+                                        AcceptTitleTextColor="Green"
+                                        CancelTitle="Cancel"
+                                        CancelTitleFontSize="12"
+                                        CancelTitleTextColor="Red"
+                                        ZoomedIn="ScaleView_ZoomedIn"
+                                        ZoomedOut="ScaleView_ZoomedOut">
+                                        <zsv:ScaleView.ZoomOutView>
+                                            <Label HorizontalOptions="FillAndExpand"
+                                                   VerticalOptions="Center"
+                                                   Text="This is Zoomable Field." />
+                                        </zsv:ScaleView.ZoomOutView>
+                                        <zsv:ScaleView.ZoomInView>
+                                            <controls:SignaturePadView
+                                                StrokeWidth="3"
+                                                StrokeColor="Black"
+                                                HorizontalOptions="FillAndExpand"
+                                                VerticalOptions="FillAndExpand"
+                                                BackgroundColor="White" />
+                                        </zsv:ScaleView.ZoomInView>
+                                    </zsv:ScaleView>
                                 </AbsoluteLayout>
                             </Frame>
                         </DataTemplate>
