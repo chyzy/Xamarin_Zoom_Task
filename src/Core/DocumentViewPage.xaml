@@ -99,12 +99,9 @@
                                                    Text="This is Zoomable Field." />
                                         </zsv:ScaleView.ZoomOutView>
                                         <zsv:ScaleView.ZoomInView>
-                                            <controls:SignaturePadView
-                                                StrokeWidth="3"
-                                                StrokeColor="Black"
-                                                HorizontalOptions="FillAndExpand"
-                                                VerticalOptions="FillAndExpand"
-                                                BackgroundColor="White" />
+                                            <Label HorizontalOptions="FillAndExpand"
+                                                   VerticalOptions="Center"
+                                                   Text="This is ZoomedIn View." />
                                         </zsv:ScaleView.ZoomInView>
                                     </zsv:ScaleView>
                                 </AbsoluteLayout>

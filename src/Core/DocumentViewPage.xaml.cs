@@ -2,6 +2,7 @@
 using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Zoom_Task.Core.Controls;
 using Zoom_Task.Core.ViewModels;
 
 namespace Zoom_Task.Core
@@ -12,7 +13,11 @@ namespace Zoom_Task.Core
         private Image _signatureImageSource;
         private double _lastScrollXPos = -1;
         private double _lastScrollYPos = -1;
+        private double _zoomedInScrollXPos = -1;
+        private double _zoomedInScrollYPos = -1;
         private float _lastZoomedValue = -1;
+        private float _fieldZoomFactor = 1.8f;
+        private bool _isZoomingInProgress = false;
 
         public DocumentViewPage()
         {
@@ -44,32 +49,57 @@ namespace Zoom_Task.Core
             SLSingatureView.IsVisible = false;
         }
 
-        void ScaleView_ZoomedIn(System.Object sender, System.EventArgs e)
+        async void ScaleView_ZoomedIn(System.Object sender, System.EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("ScaleView ZoomedIn... ");
+            ScaleView scaleView = sender as ScaleView;
+            Rectangle rectangle = scaleView.Bounds;
             _lastScrollXPos = MainScrollView.ScrollX;
             _lastScrollYPos = MainScrollView.ScrollY;
             _lastZoomedValue = MainScrollView.CurrentZoomScale;
+            
+            MainScrollView.CurrentZoomScale = _fieldZoomFactor;
+            int padding = Device.RuntimePlatform == Device.Android ? 16 : 70;
+            if(Device.RuntimePlatform == Device.Android)
+            {
+                _zoomedInScrollXPos = (rectangle.X + padding) * -1;
+                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * (_fieldZoomFactor - 1) * -1);
+                await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
+            }
+            else
+            {
+                _zoomedInScrollXPos = _lastScrollXPos + rectangle.X + padding;
+                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * (_fieldZoomFactor - 1));
+                await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
+            }
+
+            _isZoomingInProgress = true;
         }
 
-        void ScaleView_ZoomedOut(System.Object sender, System.EventArgs e)
+        async void ScaleView_ZoomedOut(System.Object sender, System.EventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("ScaleView ZoomedOut... ");
+            _isZoomingInProgress = false;
+
+            MainScrollView.CurrentZoomScale = _lastZoomedValue;
+            await MainScrollView.ScrollToAsync(_lastScrollXPos, _lastScrollYPos, true);
+
             _lastScrollXPos = -1;
             _lastScrollYPos = -1;
             _lastZoomedValue = -1;
+
+            _zoomedInScrollXPos = -1;
+            _zoomedInScrollYPos = -1;
         }
 
         void MainScrollView_Scrolled(System.Object sender, Xamarin.Forms.ScrolledEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"MainScrollView Scrolled : ScrollX : {e.ScrollX}. ScrollY : {e.ScrollY}, CurrentZoom : {MainScrollView.CurrentZoomScale}");
-            if (_lastScrollXPos != -1 || _lastScrollYPos != -1)
+            if (_isZoomingInProgress && (_zoomedInScrollXPos != -1 || _zoomedInScrollYPos != -1))
             {
-                if (MainScrollView.ScrollX != _lastScrollXPos || MainScrollView.ScrollY != _lastScrollYPos)
-                    MainScrollView.ScrollToAsync(_lastScrollXPos, _lastScrollYPos, false);
+                if (MainScrollView.ScrollX != _zoomedInScrollXPos || MainScrollView.ScrollY != _zoomedInScrollYPos)
+                    MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, false);
 
-                if (MainScrollView.CurrentZoomScale != _lastZoomedValue)
-                    MainScrollView.CurrentZoomScale = _lastZoomedValue;
+                if (MainScrollView.CurrentZoomScale != _fieldZoomFactor)
+                    MainScrollView.CurrentZoomScale = _fieldZoomFactor;
             }
         }
     }

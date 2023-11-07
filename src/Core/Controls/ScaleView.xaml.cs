@@ -196,14 +196,16 @@ namespace Zoom_Task.Core.Controls
 
         async Task ZoomIn()
         {
-            var width = Application.Current.MainPage.Width;
-            var height = Application.Current.MainPage.Height;
+            //var width = Application.Current.MainPage.Width;
+            //var height = Application.Current.MainPage.Height;
 
-            _orignalBounds = this.Bounds;
-            System.Diagnostics.Debug.WriteLine($"Button Clicked : {this.Scale}, Device Width : {width}, Height : {height}, Control Size : Width : {_orignalBounds.Width}, {_orignalBounds.X}, Height  : {_orignalBounds.Height}, {_orignalBounds.Y}");
-            double x = width - this.Bounds.Width;
-            double y = this.Bounds.Y - this.Bounds.Height;
-            await this.LayoutTo(new Rectangle(this.Bounds.X - x, y, width, this.Bounds.Height * 2), 100, Easing.Linear);
+            //_orignalBounds = this.Bounds;
+            //System.Diagnostics.Debug.WriteLine($"Button Clicked : {this.Scale}, Device Width : {width}, Height : {height}, Control Size : Width : {_orignalBounds.Width}, {_orignalBounds.X}, Height  : {_orignalBounds.Height}, {_orignalBounds.Y}");
+            //double x = width - this.Bounds.Width;
+            //double y = this.Bounds.Y - this.Bounds.Height;
+            //await this.LayoutTo(new Rectangle(this.Bounds.X - x, y, width, this.Bounds.Height * 2), 100, Easing.Linear);
+
+            //await this.ScaleTo(2, 100, Easing.Linear);
             if (ZoomOutView != null)
                 ZoomOutView.IsVisible = false;
 
@@ -215,7 +217,8 @@ namespace Zoom_Task.Core.Controls
 
         async Task ZoomOut()
         {
-            await this.LayoutTo(_orignalBounds, 100, Easing.Linear);
+            //await this.LayoutTo(_orignalBounds, 100, Easing.Linear);
+            //await this.ScaleTo(1, 100, Easing.Linear);
             if (ZoomOutView != null)
                 ZoomOutView.IsVisible = true;
 

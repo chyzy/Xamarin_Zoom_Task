@@ -74,7 +74,7 @@ namespace Zoom_Task.Droid.Renderers
             double panX = Context.FromPixels(engine.PanX);
             double panY = Context.FromPixels(engine.PanY);
 
-            System.Diagnostics.Debug.WriteLine($"ZoomScrollView OnUpdate : {panX}, {panY}, ZoomLayout.Zoom =  {_zoomLayout.Zoom}, LastZoomedScale : {LastZoomedScale}");
+            //System.Diagnostics.Debug.WriteLine($"ZoomScrollView OnUpdate : {panX}, {panY}, ZoomLayout.Zoom =  {_zoomLayout.Zoom}, LastZoomedScale : {LastZoomedScale}");
             if (_ZoomScrollView.ScrollX == panX && _ZoomScrollView.ScrollY == panY)
                 return;
 
@@ -90,7 +90,7 @@ namespace Zoom_Task.Droid.Renderers
         {
             base.OnElementPropertyChanged(sender, args);
 
-            System.Diagnostics.Debug.WriteLine($"ZoomScrollView : OnElementPropertyChanged : {args.PropertyName}, Zoom : {_zoomLayout.Zoom}, Zoom Condition : {_zoomLayout.Zoom > Element.MinimumZoomScale}");
+           //System.Diagnostics.Debug.WriteLine($"ZoomScrollView : OnElementPropertyChanged : {args.PropertyName}, Zoom : {_zoomLayout.Zoom}, Zoom Condition : {_zoomLayout.Zoom > Element.MinimumZoomScale}");
 
             if (args.PropertyName == nameof(ZoomScrollView.MinimumZoomScale) ||
                 args.PropertyName == nameof(ZoomScrollView.MaximumZoomScale))
