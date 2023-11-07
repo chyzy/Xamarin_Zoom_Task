@@ -62,13 +62,13 @@ namespace Zoom_Task.Core
             if(Device.RuntimePlatform == Device.Android)
             {
                 _zoomedInScrollXPos = (rectangle.X + padding) * -1;
-                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * (_fieldZoomFactor - 1) * -1);
+                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * ((_fieldZoomFactor - 1)/2) * -1);
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
             else
             {
                 _zoomedInScrollXPos = _lastScrollXPos + rectangle.X + padding;
-                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * (_fieldZoomFactor - 1));
+                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * (_fieldZoomFactor - 1)/2);
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
 
