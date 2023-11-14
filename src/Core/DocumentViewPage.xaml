@@ -76,7 +76,7 @@
                                     </AbsoluteLayout>
                                     <!-- Add code here to Zoom-In and Zoom-Out related stuff -->
                                     <zsv:ScaleView
-                                        AbsoluteLayout.LayoutBounds="0.96,0.96,250,120"
+                                        AbsoluteLayout.LayoutBounds="0.5,0.5,250,120"
                                         AbsoluteLayout.LayoutFlags="PositionProportional"
                                         HeightRequest="100"
                                         BackgroundColor="Yellow"

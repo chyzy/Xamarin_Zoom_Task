@@ -71,19 +71,26 @@ namespace Zoom_Task.Droid.Renderers
 
         public void OnUpdate(ZoomEngine engine, Matrix transform)
         {
-            double panX = Context.FromPixels(engine.PanX);
-            double panY = Context.FromPixels(engine.PanY);
+            try
+            {
+                double panX = Context.FromPixels(engine.PanX);
+                double panY = Context.FromPixels(engine.PanY);
 
-            //System.Diagnostics.Debug.WriteLine($"ZoomScrollView OnUpdate : {panX}, {panY}, ZoomLayout.Zoom =  {_zoomLayout.Zoom}, LastZoomedScale : {LastZoomedScale}");
-            if (_ZoomScrollView.ScrollX == panX && _ZoomScrollView.ScrollY == panY)
-                return;
+                //System.Diagnostics.Debug.WriteLine($"ZoomScrollView OnUpdate : {panX}, {panY}, ZoomLayout.Zoom =  {_zoomLayout.Zoom}, LastZoomedScale : {LastZoomedScale}");
+                if (_ZoomScrollView.ScrollX == panX && _ZoomScrollView.ScrollY == panY)
+                    return;
 
-            ScrolledXPosition = panX;
-            ScrolledYPosition = panY;
-            LastZoomedScale = _zoomLayout.Zoom;
-            _ZoomScrollView.CurrentZoomScale = _zoomLayout.Zoom;
+                ScrolledXPosition = panX;
+                ScrolledYPosition = panY;
+                LastZoomedScale = _zoomLayout.Zoom;
+                _ZoomScrollView.CurrentZoomScale = _zoomLayout.Zoom;
 
-            Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
+                Element.SetScrolledPosition(ScrolledXPosition, ScrolledYPosition);
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Exception : {ex.Message}");
+            }
         }
 
         protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs args)

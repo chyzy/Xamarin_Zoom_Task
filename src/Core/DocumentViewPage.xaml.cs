@@ -10,6 +10,7 @@ namespace Zoom_Task.Core
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class DocumentViewPage : ContentPage
     {
+        private readonly DocumentViewPageViewModel _documentViewPageViewModel;
         private Image _signatureImageSource;
         private double _lastScrollXPos = -1;
         private double _lastScrollYPos = -1;
@@ -22,7 +23,8 @@ namespace Zoom_Task.Core
         public DocumentViewPage()
         {
             InitializeComponent();
-            BindingContext = new DocumentViewPageViewModel();
+            _documentViewPageViewModel = new DocumentViewPageViewModel();
+            BindingContext = _documentViewPageViewModel;
         }
 
         void Button_Clicked(System.Object sender, System.EventArgs e)
@@ -52,23 +54,44 @@ namespace Zoom_Task.Core
         async void ScaleView_ZoomedIn(System.Object sender, System.EventArgs e)
         {
             ScaleView scaleView = sender as ScaleView;
+            AbsoluteLayout parentLayout = (AbsoluteLayout)scaleView.Parent;
+            DocumentPageViewModel documentPageViewModel = parentLayout.BindingContext as DocumentPageViewModel;
+
+            int index = 0;
+            if (documentPageViewModel != null)
+                index = _documentViewPageViewModel.DocumentPages.IndexOf(documentPageViewModel);
+
             Rectangle rectangle = scaleView.Bounds;
+            Rectangle parentRectangle = parentLayout.Bounds;
+
             _lastScrollXPos = MainScrollView.ScrollX;
             _lastScrollYPos = MainScrollView.ScrollY;
             _lastZoomedValue = MainScrollView.CurrentZoomScale;
-            
+
+            int padding = Device.RuntimePlatform == Device.Android ? 16 : 40;
+            double yPos = index * parentRectangle.Height;
+            yPos += scaleView.Y;
+
             MainScrollView.CurrentZoomScale = _fieldZoomFactor;
-            int padding = Device.RuntimePlatform == Device.Android ? 16 : 70;
-            if(Device.RuntimePlatform == Device.Android)
+
+            System.Diagnostics.Debug.WriteLine($"ScrollX : {MainScrollView.ScrollX}, {rectangle.X}, Width : {rectangle.Width}, Parent.X : {parentRectangle.X}, {parentRectangle.Width} ScrollY : {MainScrollView.ScrollY}, {rectangle.Y}, Height : {rectangle.Height}, Parent.Y : {parentRectangle.Y}, {parentRectangle.Height}");
+
+            if (Device.RuntimePlatform == Device.Android)
             {
-                _zoomedInScrollXPos = (rectangle.X + padding) * -1;
-                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * ((_fieldZoomFactor - 1)/2) * -1);
+                // Check Whether Zoomed field in scrolled to Left side.
+                if (MainScrollView.ScrollX < 0 && (MainScrollView.ScrollX < (rectangle.X * -1) || MainScrollView.ScrollX > (rectangle.X * -1)))
+                    _zoomedInScrollXPos = (rectangle.X + padding) * -1;
+                else
+                    _zoomedInScrollXPos = 0;
+
+                _zoomedInScrollYPos = yPos * -1;
+                //MainScrollView.ScrollY < (scaleView.Height * -1) ?  MainScrollView.ScrollY + (scaleView.Height * ((_fieldZoomFactor - 1)/2) * -1) : 0;                
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
             else
             {
-                _zoomedInScrollXPos = _lastScrollXPos + rectangle.X + padding;
-                _zoomedInScrollYPos = MainScrollView.ScrollY + (scaleView.Height * (_fieldZoomFactor - 1)/2);
+                _zoomedInScrollXPos = rectangle.X * _fieldZoomFactor + padding; ;
+                _zoomedInScrollYPos = (yPos * _fieldZoomFactor) + padding;
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
 
@@ -93,6 +116,8 @@ namespace Zoom_Task.Core
 
         void MainScrollView_Scrolled(System.Object sender, Xamarin.Forms.ScrolledEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine($"MainScrollView Scrolled : {e.ScrollX}, {e.ScrollY}, {_zoomedInScrollXPos}, {_zoomedInScrollYPos}");
+
             if (_isZoomingInProgress && (_zoomedInScrollXPos != -1 || _zoomedInScrollYPos != -1))
             {
                 if (MainScrollView.ScrollX != _zoomedInScrollXPos || MainScrollView.ScrollY != _zoomedInScrollYPos)
