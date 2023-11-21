@@ -31,9 +31,7 @@
     <StackLayout
         x:Name="MainContainer"
         Padding="8,4"
-        Spacing="4"
-        HorizontalOptions="FillAndExpand"
-        VerticalOptions="FillAndExpand">
+        Spacing="4">
         <Label
             x:Name="LblScaleView"
             IsVisible="{Binding IsZoomedIn, Converter={StaticResource BoolInvertConverter}}"
