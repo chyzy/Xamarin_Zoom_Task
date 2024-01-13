@@ -1,5 +1,6 @@
 ﻿using SignaturePad.Forms;
 using System.IO;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Zoom_Task.Core.Controls;
@@ -17,7 +18,7 @@ namespace Zoom_Task.Core
         private double _zoomedInScrollXPos = -1;
         private double _zoomedInScrollYPos = -1;
         private float _lastZoomedValue = -1;
-        private float _fieldZoomFactor = 1.8f;
+        private float _fieldZoomFactor = 0.5f;
         private bool _isZoomingInProgress = false;
 
         public DocumentViewPage()
@@ -53,6 +54,11 @@ namespace Zoom_Task.Core
 
         async void ScaleView_ZoomedIn(System.Object sender, System.EventArgs e)
         {
+            var displayInfo = DeviceDisplay.MainDisplayInfo;
+
+            double mainScreenWidth = displayInfo.Width / displayInfo.Density;
+            double mainScreenHeight = displayInfo.Height / displayInfo.Density;
+
             ScaleView scaleView = sender as ScaleView;
             AbsoluteLayout parentLayout = (AbsoluteLayout)scaleView.Parent;
             DocumentPageViewModel documentPageViewModel = parentLayout.BindingContext as DocumentPageViewModel;
@@ -72,9 +78,14 @@ namespace Zoom_Task.Core
             double yPos = index * parentRectangle.Height;
             yPos += scaleView.Y;
 
-            MainScrollView.CurrentZoomScale = _fieldZoomFactor;
+            //Calculate Zoom Factor Based on size
+            double zoomFactor = (mainScreenWidth - (padding * 2)) / rectangle.Width;
+            _fieldZoomFactor = (float)zoomFactor;
+            double yMargin = (mainScreenHeight - rectangle.Height) / 2;
 
-            System.Diagnostics.Debug.WriteLine($"ScrollX : {MainScrollView.ScrollX}, {rectangle.X}, Width : {rectangle.Width}, Parent.X : {parentRectangle.X}, {parentRectangle.Width} ScrollY : {MainScrollView.ScrollY}, {rectangle.Y}, Height : {rectangle.Height}, Parent.Y : {parentRectangle.Y}, {parentRectangle.Height}");
+            System.Diagnostics.Debug.WriteLine($"ScrollX : {MainScrollView.ScrollX}, {rectangle.X}, Width : {rectangle.Width}, Parent.X : {parentRectangle.X}, {parentRectangle.Width} ScrollY : {MainScrollView.ScrollY}, {rectangle.Y}, Height : {rectangle.Height}, Parent.Y : {parentRectangle.Y}, {parentRectangle.Height}, DeviceInfo  : Width : {mainScreenWidth}, Height : {mainScreenHeight}, ZoomFactor : {zoomFactor}, {MainScrollView.CurrentZoomScale}");
+
+            MainScrollView.CurrentZoomScale = _fieldZoomFactor;
 
             if (Device.RuntimePlatform == Device.Android)
             {
@@ -84,14 +95,14 @@ namespace Zoom_Task.Core
                 else
                     _zoomedInScrollXPos = 0;
 
-                _zoomedInScrollYPos = yPos * -1;
+                _zoomedInScrollYPos = (yPos - yMargin) * -1;
                 //MainScrollView.ScrollY < (scaleView.Height * -1) ?  MainScrollView.ScrollY + (scaleView.Height * ((_fieldZoomFactor - 1)/2) * -1) : 0;                
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
             else
             {
-                _zoomedInScrollXPos = rectangle.X * _fieldZoomFactor + padding; ;
-                _zoomedInScrollYPos = (yPos * _fieldZoomFactor) + padding;
+                _zoomedInScrollXPos = rectangle.X > 0 ? (rectangle.X * _fieldZoomFactor) + padding : 0;
+                _zoomedInScrollYPos = (yPos * _fieldZoomFactor) - yMargin;
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
 
@@ -116,8 +127,6 @@ namespace Zoom_Task.Core
 
         void MainScrollView_Scrolled(System.Object sender, Xamarin.Forms.ScrolledEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"MainScrollView Scrolled : {e.ScrollX}, {e.ScrollY}, {_zoomedInScrollXPos}, {_zoomedInScrollYPos}");
-
             if (_isZoomingInProgress && (_zoomedInScrollXPos != -1 || _zoomedInScrollYPos != -1))
             {
                 if (MainScrollView.ScrollX != _zoomedInScrollXPos || MainScrollView.ScrollY != _zoomedInScrollYPos)

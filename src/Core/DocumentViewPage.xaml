@@ -21,7 +21,7 @@
                 Orientation="Both"
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
-                MinimumZoomScale="1"
+                MinimumZoomScale="0.01"
                 MaximumZoomScale="3">
                 <StackLayout
                     BindableLayout.ItemsSource="{Binding DocumentPages}"
