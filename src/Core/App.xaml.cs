@@ -11,7 +11,7 @@ namespace Zoom_Task
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new DocumentViewPage());
+            MainPage = new NavigationPage(new DocumentViewPage()) { BarBackgroundColor  = Color.DodgerBlue, BarTextColor = Color.White };
         }
 
         protected override void OnStart()
