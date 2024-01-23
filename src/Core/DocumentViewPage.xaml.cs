@@ -74,14 +74,22 @@ namespace Zoom_Task.Core
             _lastScrollYPos = MainScrollView.ScrollY;
             _lastZoomedValue = MainScrollView.CurrentZoomScale;
 
-            int padding = Device.RuntimePlatform == Device.Android ? 16 : 40;
+            double pageXPadding = 0, pageYPadding = 0;
+            if (mainScreenWidth > parentRectangle.Width)
+                pageXPadding = (mainScreenWidth - parentRectangle.Width) / 2;
+
+            if (mainScreenHeight > parentRectangle.Height)
+                pageYPadding = (mainScreenHeight - parentRectangle.Height) / 2;
+            else
+                pageYPadding = (mainScreenHeight - rectangle.Height) / 2;
+
+            int padding = Device.Idiom == TargetIdiom.Tablet ? Device.RuntimePlatform == Device.Android ? 16 : 40 : Device.RuntimePlatform == Device.Android ? 16 : 20;
             double yPos = index * parentRectangle.Height;
             yPos += scaleView.Y;
 
             //Calculate Zoom Factor Based on size
             double zoomFactor = (mainScreenWidth - (padding * 2)) / rectangle.Width;
             _fieldZoomFactor = (float)zoomFactor;
-            double yMargin = (mainScreenHeight - rectangle.Height) / 2;
 
             System.Diagnostics.Debug.WriteLine($"ScrollX : {MainScrollView.ScrollX}, {rectangle.X}, Width : {rectangle.Width}, Parent.X : {parentRectangle.X}, {parentRectangle.Width} ScrollY : {MainScrollView.ScrollY}, {rectangle.Y}, Height : {rectangle.Height}, Parent.Y : {parentRectangle.Y}, {parentRectangle.Height}, DeviceInfo  : Width : {mainScreenWidth}, Height : {mainScreenHeight}, ZoomFactor : {zoomFactor}, {MainScrollView.CurrentZoomScale}");
 
@@ -95,17 +103,20 @@ namespace Zoom_Task.Core
                 else
                     _zoomedInScrollXPos = 0;
 
-                _zoomedInScrollYPos = (yPos - yMargin) * -1;
+                _zoomedInScrollYPos = (yPos - pageYPadding) * -1;
                 //MainScrollView.ScrollY < (scaleView.Height * -1) ?  MainScrollView.ScrollY + (scaleView.Height * ((_fieldZoomFactor - 1)/2) * -1) : 0;                
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
             else
             {
-                _zoomedInScrollXPos = rectangle.X > 0 ? (rectangle.X * _fieldZoomFactor) + padding : 0;
-                _zoomedInScrollYPos = (yPos * _fieldZoomFactor) - yMargin;
+                double tScrollX = Device.Idiom == TargetIdiom.Tablet ? ((rectangle.X + pageXPadding) * _fieldZoomFactor) - padding : ((rectangle.X + pageXPadding) * _fieldZoomFactor) + padding;
+
+                _zoomedInScrollXPos = rectangle.X > 0 ? tScrollX : 0;
+                _zoomedInScrollYPos = Device.Idiom == TargetIdiom.Tablet ? (yPos * _fieldZoomFactor) - (pageYPadding + padding) : (yPos * _fieldZoomFactor) - pageYPadding - padding;
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
 
+            System.Diagnostics.Debug.WriteLine($"Scrolled To : {_zoomedInScrollXPos}, {_zoomedInScrollYPos}, ZoomFactor : {_fieldZoomFactor}");
             _isZoomingInProgress = true;
         }
 
@@ -127,6 +138,7 @@ namespace Zoom_Task.Core
 
         void MainScrollView_Scrolled(System.Object sender, Xamarin.Forms.ScrolledEventArgs e)
         {
+            System.Diagnostics.Debug.WriteLine($"Scrolled : {e.ScrollX}, {e.ScrollY}, ZoomFactor : {MainScrollView.CurrentZoomScale}");
             if (_isZoomingInProgress && (_zoomedInScrollXPos != -1 || _zoomedInScrollYPos != -1))
             {
                 if (MainScrollView.ScrollX != _zoomedInScrollXPos || MainScrollView.ScrollY != _zoomedInScrollYPos)

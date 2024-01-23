@@ -23,7 +23,7 @@
                 HorizontalOptions="FillAndExpand"
                 VerticalOptions="FillAndExpand"
                 MinimumZoomScale="0.01"
-                MaximumZoomScale="3">
+                MaximumZoomScale="10">
                 <StackLayout
                     BindableLayout.ItemsSource="{Binding DocumentPages}"
                     HorizontalOptions="FillAndExpand"
@@ -78,7 +78,7 @@
                                     <!-- Add code here to Zoom-In and Zoom-Out related stuff -->
                                     <zsv:ScaleView
                                         AbsoluteLayout.LayoutFlags="PositionProportional"
-                                        AbsoluteLayout.LayoutBounds="1,1,500,500"
+                                        AbsoluteLayout.LayoutBounds="0.5,0.5,300,200"
                                         BackgroundColor="Yellow"
                                         ZoomInTitle="Sign Below"
                                         ZoomInTitleFontSize="14"
