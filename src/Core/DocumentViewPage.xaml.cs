@@ -103,7 +103,8 @@ namespace Zoom_Task.Core
                 else
                     _zoomedInScrollXPos = 0;
 
-                _zoomedInScrollYPos = (yPos - pageYPadding) * -1;
+                _zoomedInScrollYPos = (Device.Idiom == TargetIdiom.Tablet ? yPos - (pageYPadding + padding) : yPos - (pageYPadding-padding*2)) * -1;
+
                 //MainScrollView.ScrollY < (scaleView.Height * -1) ?  MainScrollView.ScrollY + (scaleView.Height * ((_fieldZoomFactor - 1)/2) * -1) : 0;                
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
@@ -112,7 +113,7 @@ namespace Zoom_Task.Core
                 double tScrollX = Device.Idiom == TargetIdiom.Tablet ? ((rectangle.X + pageXPadding) * _fieldZoomFactor) - padding : ((rectangle.X + pageXPadding) * _fieldZoomFactor) + padding;
 
                 _zoomedInScrollXPos = rectangle.X > 0 ? tScrollX : 0;
-                _zoomedInScrollYPos = Device.Idiom == TargetIdiom.Tablet ? (yPos * _fieldZoomFactor) - (pageYPadding + padding) : (yPos * _fieldZoomFactor) - pageYPadding - padding;
+                _zoomedInScrollYPos = Device.Idiom == TargetIdiom.Tablet ? (yPos * _fieldZoomFactor) - (pageYPadding + padding) : (yPos * _fieldZoomFactor) - (pageYPadding - padding*2);
                 await MainScrollView.ScrollToAsync(_zoomedInScrollXPos, _zoomedInScrollYPos, true);
             }
 
